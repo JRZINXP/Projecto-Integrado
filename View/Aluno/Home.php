@@ -4,22 +4,36 @@
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Área do Aluno</title>
     <link rel="stylesheet" href="../../Style/home.css">
-    <title>Home</title>
 </head>
 <body>
+    <div class="top-bar">
+        <a href="Perfil.php" class="perfil-link">👤 Meu Perfil</a>
+    </div>
+
     <div id="container">
-        <div></div>
-        <div>
-            <h1>Bem-vindo, <?php echo $_SESSION['nome']; echo $_SESSION['tipo']?></h1>
-            <p>Você está na página inicial do aluno.</p>
-            <p>Nesta página você poderá ver suas notas, e seu aproveitamento</p>
+        <div class="card">
+            <h2>Olá, <?php echo $_SESSION['nome']; ?> 👋</h2>
+            <p>Bem-vindo à sua área do aluno!</p>
+            <p>Aqui você pode acompanhar o seu desempenho escolar.</p>
         </div>
-        <div>Div 3</div>
+
+        <div class="card">
+            <h2>📊 Aproveitamento</h2>
+            <p>Consulte gráficos, médias e progresso geral nas disciplinas.</p>
+            <a href="#" class="btn">Ver Aproveitamento</a>
+        </div>
+
+        <div class="card">
+            <h2>📝 Notas</h2>
+            <p>Veja as suas notas mais recentes e resultados de avaliações.</p>
+            <a href="#" class="btn">Ver Notas</a>
+        </div>
     </div>
 </body>
 </html>
