@@ -24,6 +24,7 @@ class Login
                 session_start();
                 $_SESSION['nome'] = $row['Nome'];
                 $_SESSION['tipo'] = $row['Tipo'];
+                $_SESSION['id'] = $row['UsuarioID'];
                 // Lembrar usuário por 1h
                 setcookie('user_email', $email, time() + 3600, "/");
                 if ($row['Tipo'] === 'Aluno') {
