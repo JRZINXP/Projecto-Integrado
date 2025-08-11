@@ -4,11 +4,13 @@ class UserModel{
     private $nome;
     private $email;
     private $senha;
+    private $tipo;
 
-    public function __construct($nome, $email, $senha) {
+    public function __construct($nome, $email, $senha, $tipo) {
         $this->nome = $nome;
         $this->email = $email;
         $this->senha = $senha;
+        $this->tipo = $tipo;
     }
 
     public function getNome() {
@@ -23,6 +25,10 @@ class UserModel{
         return $this->senha;
     }
 
+    public function getTipo(){
+        return $this->tipo;
+    }
+
     public function setNome($nome) {
         $this->nome = $nome;
     }
@@ -33,5 +39,9 @@ class UserModel{
     
     public function setSenha($senha) {
         $this->senha = $senha;
+    }
+
+    public function setTipo($tipo){
+        $this->tipo = $tipo;
     }
 }
