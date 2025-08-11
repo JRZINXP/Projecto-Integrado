@@ -68,7 +68,20 @@ CREATE TABLE Nota (
     MatriculaID INT NOT NULL,
     ModuloID INT NOT NULL,
     Periodo VARCHAR(20),
-    Valor DECIMAL(4,2) CHECK (Valor >= 0 AND Valor <= 20),
+    Valor DECIMAL(4,2) CHECK (Valor >= 0 AND Valor <= 101),
     FOREIGN KEY (MatriculaID) REFERENCES Matricula(MatriculaID),
     FOREIGN KEY (ModuloID) REFERENCES Modulo(ModuloID)
 );
+
+CREATE TABLE Sessao (
+    SessaoID INT AUTO_INCREMENT PRIMARY KEY,
+    UsuarioID INT NOT NULL,
+    Token VARCHAR(255) NOT NULL,
+    DataLogin DATETIME DEFAULT CURRENT_TIMESTAMP,
+    DataExpiracao DATETIME NOT NULL,
+    IP VARCHAR(45),
+    Ativo BOOLEAN DEFAULT TRUE,
+    FOREIGN KEY (UsuarioID) REFERENCES Usuario(UsuarioID)
+);
+
+

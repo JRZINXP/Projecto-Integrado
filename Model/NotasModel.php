@@ -47,7 +47,3 @@ Class NotasModel{
         
     }
 }
-
-$teste = new NotasModel();
-#echo $teste->getAlunoID();
-echo "Seu id é ".$_SESSION['nome'];

@@ -78,3 +78,7 @@ button:hover {
     color: #e0e6f0;
 }
 
+a{
+    color: white;
+    text-decoration: none;
+}

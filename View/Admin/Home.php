@@ -1,33 +1,50 @@
-<?php 
-    session_start();
-    include '../../Controller/Admin/Home.php';
+<?php
+include '../../Controller/Admin/Home.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../../Style/home.css">
     <title>Home</title>
 </head>
+
 <body>
+    <h1>Painel de admin</h1>
     <div id="container">
         <div class="card">
-            <h2>📊 Aproveitamento</h2>
-            <p>Consulte gráficos, médias e progresso geral nas disciplinas.</p>
-            <a href="#" class="btn">Ver Aproveitamento</a>
+            <h2>Registrar módulos</h2>
+            <p>Registre os módulos disponíveis para organizar melhor o conteúdo das turmas.</p>
+            <a href="AdicionarModulo.php" class="btn">Registrar e editar Módulos</a>
+        </div>
+
+
+        <div class="card">
+            <h2>Registrar Nova Turma</h2>
+            <p>Adicione novas turmas ao sistema e organize os alunos de forma eficiente.</p>
+            <a href="AdicionarTurma.php" class="btn">Registrar Turma</a>
         </div>
 
         <div class="card">
-            <h2>Olá, <?php echo $_SESSION['nome']; ?> 👋</h2>
-            <p>Bem-vindo à sua área do aluno!</p>
-            <p>Aqui você pode acompanhar o seu desempenho escolar.</p>
+            <h2>Registrar Novos Alunos</h2>
+            <p>Cadastre novos alunos e mantenha o banco de dados sempre atualizado.</p>
+            <a href="AdicionarAluno.php" class="btn">Registrar aluno</a>
         </div>
 
         <div class="card">
-            <h2>📝 Notas</h2>
-            <p>Veja as suas notas mais recentes e resultados de avaliações.</p>
-            <a href="Notas.php" class="btn">Ver Notas</a>
+            <h2>Registrar Novos Formadores</h2>
+            <p>Inclua novos formadores para ampliar a equipe e oferecer mais qualidade no ensino.</p>
+            <a href="AdicionarFormador.php" class="btn">Registrar formador</a>
         </div>
+
+        <div class="card">
+            <h2>Bem-vindo ao painel de admin</h2>
+            <p>Gerencie turmas, alunos, formadores e acompanhe o andamento de todo o sistema.</p>
+        </div>
+
     </div>
 </body>
+
 </html>
