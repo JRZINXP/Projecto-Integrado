@@ -1,6 +1,7 @@
 <?php
 
 include_once '../Conect/conector.php';
+session_start();
 
 Class NotasModel{
     public $formador;
@@ -9,7 +10,7 @@ Class NotasModel{
     public $nota;
 
     
-    public function getAlunoID(){
+    /**public function getAlunoID(){
     $conexao = new Conector();
     $conn = $conexao->getConexao();
 
@@ -25,7 +26,7 @@ Class NotasModel{
     }
 
     return 'Not found'; // Se não encontrar
-}
+}**/
 
 
     public function querys(){
@@ -48,5 +49,5 @@ Class NotasModel{
 }
 
 $teste = new NotasModel();
-echo $teste->getAlunoID();
-echo S_SESSION['id'];
+#echo $teste->getAlunoID();
+echo "Seu id é ".$_SESSION['nome'];
