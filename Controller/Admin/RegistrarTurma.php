@@ -14,7 +14,14 @@ class Turma{
         $sql = "INSERT INTO Turma(Nome, AnoLetivo,CursoID) VALUES(?,?,?)";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param('ssi',$nome,$anoLectivo,$curso);
-        $stmt->execute();
+        if ($stmt->execute()) {
+            $msg = urlencode('Turma cadastrada com sucesso!');
+        } else {
+            $msg = urlencode('Erro ao cadastrar turma.');
+        }
+        $redirectUrl = '../../View/Admin/AdicionarTurma.php?msg=' . $msg;
+        header("Location: $redirectUrl");
+        exit();
     }
 }
 

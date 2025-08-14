@@ -11,7 +11,9 @@ class Formador{
 
         $nome = $_POST['nome']??'';
         $email = $_POST['email']??'';
-        $senha = $_POST['senha']??'';
+    $senha = $_POST['senha']??'';
+    // Adiciona hash na senha
+    $senha = password_hash($senha, PASSWORD_DEFAULT);
 
         $sql = "INSERT INTO Usuario(Nome,Email,Senha,Tipo) VALUES (?,?,?, 'Formador')";
         $stmt = $conn->prepare($sql);
@@ -44,7 +46,15 @@ class Formador{
         $stmt = $conn->prepare($sql);
         $stmt->bind_param('ssi',$this->dados['nome'], $this->dados['email'], $this->dados['id']);
         $stmt->execute();
-    }
+            if ($stmt->execute()) {
+                $msg = urlencode('Formador cadastrado com sucesso!');
+            } else {
+                $msg = urlencode('Erro ao cadastrar formador.');
+            }
+            $redirectUrl = '../../View/Admin/AdicionarFormador.php?msg=' . $msg;
+            header("Location: $redirectUrl");
+            exit();
+        }
 }
 
 $user = new Formador();

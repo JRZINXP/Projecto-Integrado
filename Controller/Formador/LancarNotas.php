@@ -13,8 +13,7 @@ class LancarNotas{
     public $dados;
     
     public function __construct() {
-        $this->nome    = $_POST['nome']    ?? '';
-        $this->codigo  = $_POST['codigo']  ?? '';
+        $this->codigo  = $_POST['userID']  ?? '';
         $this->turma   = $_POST['turma']   ?? '';
         $this->curso   = $_POST['curso']   ?? '';
         $this->modulo  = $_POST['modulo']  ?? '';
@@ -22,72 +21,40 @@ class LancarNotas{
         $this->nota    = $_POST['nota']    ?? '';
     }
     
-    public function turma(){
-        $conexao = new Conector();
-        $conn = $conexao->getConexao();
-
-        $sql = "SELECT * FROM Turma WHERE Nome = ?";
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param('s', $this->turma);
-        $stmt->execute();
-        $result = $stmt->get_result();
-
-        if($result->num_rows > 0){
-            $row = $result->fetch_assoc();
-            $turmaID = $row['TurmaID'];
-            $this->dados['turmaID'] = $turmaID;
-        }
-    }
-
     public function matricula(){
         $conexao = new Conector();
         $conn = $conexao->getConexao();
 
-
-        $sql = "SELECT * FROM Matricula WHERE TurmaID = ?";
+        $sql = "SELECT * FROM Matricula WHERE AlunoID = ?";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param('i', $this->dados['turmaID']);
+        $stmt->bind_param('i', $this->codigo);
         $stmt->execute();
         $result = $stmt->get_result();
 
         if($result->num_rows > 0){
             $row = $result->fetch_assoc();
-            $matriculaID = $row['MatriculaID'];
-            $this->dados['matricula'] = $matriculaID;
+            $this->dados['matricula'] = $row['MatriculaID'];
         }
     }
 
-    public function modulo(){
+    public function addNota(){
         $conexao = new Conector();
         $conn = $conexao->getConexao();
 
-        $sql = "SELECT * FROM Modulo WHERE Nome = ?";
+        $sql = "INSERT INTO Nota(MatriculaID,ModuloID,Periodo,Valor) VALUES(?,?,?,?)";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param('s', $this->modulo);
-        $stmt->execute();
-        $result = $stmt->get_result();
-
-        if($result->num_rows > 0){
-            $row = $result->fetch_assoc();
-            $moduloID = $row['ModuloID'];
-            $this->dados['moduloID'] = $moduloID;
-        }   
+        $stmt->bind_param('iisi',$this->dados['matricula'],$this->modulo, $this->periodo, $this->nota);
+        if ($stmt->execute()) {
+            $msg = urlencode('Nota lançada com sucesso!');
+        } else {
+            $msg = urlencode('Erro ao lançar nota.');
+        }
+        $redirectUrl = '../../View/Formador/LancarNotas.php?msg=' . $msg;
+        header("Location: $redirectUrl");
+        exit();
     }
-
-    public function addNotas(){
-        $conexao = new Conector();
-        $conn = $conexao->getConexao();
-        
-
-        $sql = "INSERT INTO Nota(MatriculaID, ModuloID, Periodo, Valor) VALUES (?,?,?,?)";
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param('iisd', $this->dados['matricula'], $this->dados['moduloID'], $this->periodo, $this->nota);
-        $stmt->execute();
-    } 
 }
 
-$lancar = new LancarNotas();
-$lancar->turma();
-$lancar->matricula();
-$lancar->modulo();
-$lancar->addNotas();
+$nota = new LancarNotas();
+$nota->matricula();
+$nota->addNota();

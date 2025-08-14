@@ -9,25 +9,35 @@ class Modulo
     public $formador;
     public $turma;
 
-    public function __construct(){
-        $this->nome = $_POST['nome']?? '';
-        $this->curso = $_POST['curso']?? 0;
-        $this->formador = $_POST['formador']?? 0;
-        $this->turma = $_POST['turma']?? 0;
+    public function __construct()
+    {
+        $this->nome = $_POST['nome'] ?? '';
+        $this->curso = $_POST['curso'] ?? 0;
+        $this->formador = $_POST['formador'] ?? 0;
+        $this->turma = $_POST['turma'] ?? 0;
     }
 
-    public function addModulo(){
-    $conexao = new Conector();
-    $conn = $conexao->getConexao();
+    public function addModulo()
+    {
+        $conexao = new Conector();
+        $conn = $conexao->getConexao();
 
-    $sql = "INSERT INTO Modulo(Nome,CursoID) VALUES(?,?)";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param('si', $this->nome, $this->curso);
-    $stmt->execute();
+        $sql = "INSERT INTO Modulo(Nome,CursoID) VALUES(?,?)";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param('si', $this->nome, $this->curso);
+        $stmt->execute();
 
-    // Salva o ID recém inserido
-    $this->dados['moduloID'] = $conn->insert_id;
-}
+        // Salva o ID recém inserido
+        $this->dados['moduloID'] = $conn->insert_id;
+            if ($stmt->execute()) {
+                $msg = urlencode('Módulo cadastrado com sucesso!');
+            } else {
+                $msg = urlencode('Erro ao cadastrar módulo.');
+            }
+            $redirectUrl = '../../View/Admin/AdicionarModulo.php?msg=' . $msg;
+            header("Location: $redirectUrl");
+            exit();
+        }
 
     public function lecionar()
     {

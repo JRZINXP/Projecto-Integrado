@@ -82,3 +82,8 @@ a{
     color: white;
     text-decoration: none;
 }
+
+label.error {
+    color: red;
+    font-size: 0.9em;
+}

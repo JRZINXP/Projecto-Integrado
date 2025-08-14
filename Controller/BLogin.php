@@ -5,9 +5,12 @@ class Login
 {
     public function verificar()
     {
+        session_start();
         $email = $_POST['email'] ?? '';
         $senha = $_POST['senha'] ?? '';
         $erros = '';
+        $_SESSION['email'] = $email;
+
 
         $conexao = new Conector();
         $conn = $conexao->getConexao();
@@ -20,14 +23,40 @@ class Login
 
         if ($result->num_rows > 0) {
             $row = $result->fetch_assoc();
-            if ($senha === $row['Senha']) {
-                session_start();
+            if (password_verify($senha, $row['Senha'])) {
                 $_SESSION['nome'] = $row['Nome'];
                 $_SESSION['tipo'] = $row['Tipo'];
                 $_SESSION['id'] = $row['UsuarioID'];
-                // Lembrar usuário por 1h
-                setcookie('user_email', $email, time() + 3600, "/");
+
+                // Criar token aleatório
+                $token = bin2hex(random_bytes(32));
+
+                // Capturar IP do usuário
+                $ip = $_SERVER['REMOTE_ADDR'];
+
+                // Definir data de expiração (7 dias à frente)
+                $dataExpiracao = date('Y-m-d H:i:s', time() + (7 * 24 * 60 * 60));
+
+                // Salvar sessão no banco
+                $sqlSessao = "INSERT INTO Sessao (UsuarioID, Token, DataExpiracao, IP) VALUES (?, ?, ?, ?)";
+                $stmtSessao = $conn->prepare($sqlSessao);
+                $stmtSessao->bind_param("isss", $row['UsuarioID'], $token, $dataExpiracao, $ip);
+                $stmtSessao->execute();
+
+                // Salvar token no cookie para autenticação posterior (7 dias)
+                setcookie('session_token', $token, time() + (7 * 24 * 60 * 60), "/", "", false, true);
+
+                // Redirecionar conforme o tipo
                 if ($row['Tipo'] === 'Aluno') {
+                    $sqlAluno = "SELECT * FROM Aluno WHERE email = ?";
+                    $stmtAluno = $conn->prepare($sqlAluno);
+                    $stmtAluno->bind_param("s", $email);
+                    $stmtAluno->execute();
+                    $result = $stmtAluno->get_result();
+                    if ($result->num_rows > 0) {
+                        $rowAluno = $result->fetch_assoc();
+                        $_SESSION['AlunoID'] = $rowAluno['AlunoID'];
+                    }
                     header("Location: ../View/Aluno/Home.php");
                     exit();
                 } elseif ($row['Tipo'] === 'Formador') {
@@ -36,21 +65,21 @@ class Login
                 } elseif ($row['Tipo'] === 'Admin') {
                     header("Location: ../View/Admin/Home.php");
                     exit();
-                } else {
-                    $erros .= "Tipo de usuário desconhecido.<br>";
                 }
-            } else {
-                $erros .= "Senha incorreta.<br>";
+                } else {
+                    header("Location: ../View/Login.php?erro=senha");
+                    exit();
             }
         } else {
-            $erros .= "Email não encontrado.<br>";
+                header("Location: ../View/Login.php?erro=email");
+                exit();
         }
 
         return $erros;
     }
 }
 
-$erros = ''; 
+$erros = '';
 $login = new Login();
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $erros = $login->verificar();

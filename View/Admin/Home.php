@@ -12,6 +12,11 @@ include '../../Controller/Admin/Home.php';
 </head>
 
 <body>
+    <div class="top-bar" style="display: flex; justify-content: flex-end; align-items: center; gap: 18px; background: linear-gradient(90deg, #1e3579 60%, #4a90e2 100%); box-shadow: 0 2px 12px 0 rgba(30,53,121,0.10); padding: 18px 32px 18px 0;">
+        <form action="../../Controller/logout.php" method="post" style="display:inline; margin:0;">
+            <button type="submit" class="btn" style="padding:10px 22px; font-size:15px; border-radius:24px; background:#e74c3c; color:#fff; font-weight:600; border:none; cursor:pointer; transition:background 0.2s;">Sair</button>
+        </form>
+    </div>
     <h1>Painel de admin</h1>
     <div id="container">
         <div class="card">

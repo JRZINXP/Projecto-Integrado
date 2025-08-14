@@ -94,3 +94,6 @@ CREATE TABLE Sessao (
     Ativo BOOLEAN DEFAULT TRUE,
     FOREIGN KEY (UsuarioID) REFERENCES Usuario(UsuarioID)
 );
+
+insert into Usuario(Nome,Email,Senha,Tipo) values ("Adão","adm@gmail.com","$2y$10$E9v5N3zXb2K7a0h2pFv7xO9nqH7d5y8bXvGZs9rVtJjGf3l8mU7yC
+","Admin");

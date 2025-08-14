@@ -26,10 +26,22 @@ $modulos = $modulo->listarModulos();
 
 <body>
     <div class="container">
+        <?php if (isset($_GET['msg'])): ?>
+            <div id="msg-sucesso" style="text-align:center;margin:18px 0;font-size:17px;font-weight:600;color:#27ae60;background:#eafaf1;padding:12px 0;border-radius:8px;">
+                <?= htmlspecialchars($_GET['msg']) ?>
+            </div>
+            <script>
+                setTimeout(function() {
+                    var msg = document.getElementById('msg-sucesso');
+                    if (msg) msg.style.display = 'none';
+                }, 3000);
+            </script>
+        <?php endif; ?>
+        <h1>Lançar notas</h1>
         <form action="../../Controller/Formador/LancarNotas.php" method="post">
             <p>
-                <label for="nome">Nome do aluno:</label>
-                <input type="text" id="nome" name="nome" class="container-campo">
+                <label for="nome">Código do aluno:</label>
+                <input type="number" id="userID" name="userID" class="container-campo">
             </p>
 
             <p>
@@ -48,32 +60,32 @@ $modulos = $modulo->listarModulos();
             </p>
 
             <p>
-            <label for="">Curso: </label>
-            <select name="curso" id="curso" class="container-campo">
-                <?php if (!empty($cursos)): ?>
-                    <?php foreach ($cursos as $curso): ?>
-                        <option value="<?= $curso['CursoID'] ?>">
-                            <?= htmlspecialchars($curso['Nome']) ?>
-                        </option>
-                    <?php endforeach; ?>
-                <?php else: ?>
-                    <option value="">Nenhum curso encontrado</option>
-                <?php endif; ?>
-            </select>
+                <label for="">Curso: </label>
+                <select name="curso" id="curso" class="container-campo">
+                    <?php if (!empty($cursos)): ?>
+                        <?php foreach ($cursos as $curso): ?>
+                            <option value="<?= $curso['CursoID'] ?>">
+                                <?= htmlspecialchars($curso['Nome']) ?>
+                            </option>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <option value="">Nenhum curso encontrado</option>
+                    <?php endif; ?>
+                </select>
             </p>
 
             <p>
                 <label for="modulo">Módulo:</label>
                 <select name="modulo" id="modulo" class="container-campo">
                     <?php if (!empty($modulo)): ?>
-                    <?php foreach ($modulos as $modulo): ?>
-                        <option value="<?= $modulo['ModuloID'] ?>">
-                            <?= htmlspecialchars($modulo['Nome']) ?>
-                        </option>
-                    <?php endforeach; ?>
-                <?php else: ?>
-                    <option value="">Nenhum curso encontrado</option>
-                <?php endif; ?>
+                        <?php foreach ($modulos as $modulo): ?>
+                            <option value="<?= $modulo['ModuloID'] ?>">
+                                <?= htmlspecialchars($modulo['Nome']) ?>
+                            </option>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <option value="">Nenhum curso encontrado</option>
+                    <?php endif; ?>
                 </select>
             </p>
 
@@ -91,8 +103,43 @@ $modulos = $modulo->listarModulos();
             </p>
 
             <button type="submit">Lançar nota</button>
-            <button type="button"><a href="Home.php">Voltar</a></button>
+            <button type="button" onclick="window.location.href='Home.php'">Voltar</button>
         </form>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.min.js"></script>
+
+        <script>
+            $(document).ready(function() {
+                $("form").validate({
+                    rules: {
+                        nota: {
+                            required: true,
+                            number: true,
+                            min: 0,
+                            max: 100
+                        }
+                    },
+                    messages: {
+                        nota: {
+                            required: "Por favor, insira a nota.",
+                            number: "A nota deve ser um número.",
+                            min: "A nota mínima é 0.",
+                            max: "A nota máxima é 100."
+                        }
+                    },
+                    errorElement: "div",
+                    errorPlacement: function(error, element) {
+                        error.css({
+                            color: "red",
+                            marginTop: "5px",
+                            fontSize: "14px"
+                        });
+                        error.insertAfter(element);
+                    }
+                });
+            });
+        </script>
+
     </div>
 </body>
 

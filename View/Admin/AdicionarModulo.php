@@ -25,6 +25,18 @@ $turmas = $turma->listarTurmas();
 
 <body>
     <div class="container">
+        <?php if (isset($_GET['msg'])): ?>
+        <div id="msg-sucesso" style="text-align:center;margin:18px 0;font-size:17px;font-weight:600;color:#27ae60;background:#eafaf1;padding:12px 0;border-radius:8px;">
+            <?= htmlspecialchars($_GET['msg']) ?>
+        </div>
+        <script>
+            setTimeout(function(){
+                var msg = document.getElementById('msg-sucesso');
+                if(msg) msg.style.display = 'none';
+            }, 3000);
+        </script>
+    <?php endif; ?>
+    <h1>Adicionar Módulo</h1>
         <form action="../../Controller/Admin/RegistraModulo.php" method="post">
             <p>
                 <label for="">Nome do módulo:</label>
@@ -75,7 +87,7 @@ $turmas = $turma->listarTurmas();
             </p>
             
             <button type="submit" id="registrar">Registrar</button>
-            <button><a href="Home.php">Voltar</a></button>
+            <button type="button" onclick="window.location.href='Home.php'">Voltar</button>
         </form>
     </div>
 </body>

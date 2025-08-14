@@ -16,7 +16,9 @@ class Aluno {
 
         $this->nome = $_POST['nome'] ?? '';
         $this->email = $_POST['email'] ?? '';
-        $this->senha = $_POST['senha'] ?? '';
+    $this->senha = $_POST['senha'] ?? '';
+    // Adiciona hash na senha
+    $this->senha = password_hash($this->senha, PASSWORD_DEFAULT);
         $this->dataNasc = $_POST['dataNasc'] ?? '';
         $this->curso = $_POST['curso'] ?? '';
         $this->turma = $_POST['turma'] ?? '';
