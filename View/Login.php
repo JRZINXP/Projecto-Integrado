@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,6 +13,7 @@
             color: red;
             margin-top: 10px;
         }
+
         label.error {
             color: red;
             font-size: 0.9em;
@@ -24,6 +26,7 @@
 
 
 </head>
+
 <body>
     <div class="container">
         <h1>Sistema de Gestão de Notas</h1>
@@ -37,17 +40,9 @@
                 <input type="password" id="senha" class="container-campo" name="senha">
             </p>
             <button id="registrar" type="submit">Entrar</button>
-            <span id="resposta"><?php echo $erros ?? ''; ?></span>
-               <?php
-               if (isset($_GET['erro'])) {
-                   if ($_GET['erro'] === 'senha') {
-                       echo '<span id="msg-erro">Senha incorreta.</span>';
-                   } elseif ($_GET['erro'] === 'email') {
-                       echo '<span id="msg-erro">Email não encontrado.</span>';
-                   }
-               }
-               ?>
+            <span id="resposta"></span>
         </form>
+
     </div>
 
     <script>
@@ -75,10 +70,30 @@
                     error.insertAfter(element); // mostra o erro abaixo do input
                 },
                 submitHandler: function(form) {
-                    form.submit(); // envia o formulário se estiver válido
+                    // AJAX login
+                    var dados = $(form).serialize();
+                    $.ajax({
+                        url: '../Controller/BLogin.php',
+                        type: 'POST',
+                        data: dados,
+                        dataType: 'json',
+                        success: function(res) {
+                            if (res.sucesso) {
+                                // Redireciona conforme tipo
+                                window.location.href = res.redirect;
+                            } else {
+                                $('#resposta').text(res.mensagem || 'Erro ao logar.');
+                            }
+                        },
+                        error: function(xhr) {
+                            $('#resposta').text('Erro de conexão.');
+                        }
+                    });
+                    return false; // impede submit padrão
                 }
             });
         });
     </script>
 </body>
+
 </html>

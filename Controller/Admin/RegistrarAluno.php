@@ -1,7 +1,8 @@
 <?php
 include '../../Conect/conector.php';
 
-class Aluno {
+class Aluno
+{
     public $nome;
     public $email;
     public $senha;
@@ -11,20 +12,20 @@ class Aluno {
 
     private $dados;
 
-    public function __construct() {
+    public function __construct()
+    {
         session_start();
 
         $this->nome = $_POST['nome'] ?? '';
         $this->email = $_POST['email'] ?? '';
-    $this->senha = $_POST['senha'] ?? '';
-    // Adiciona hash na senha
-    $this->senha = password_hash($this->senha, PASSWORD_DEFAULT);
+        $this->senha = $_POST['senha'] ?? '';
         $this->dataNasc = $_POST['dataNasc'] ?? '';
         $this->curso = $_POST['curso'] ?? '';
         $this->turma = $_POST['turma'] ?? '';
     }
 
-    public function addUser(){
+    public function addUser()
+    {
         $conexao = new Conector();
         $conn = $conexao->getConexao();
 
@@ -34,7 +35,8 @@ class Aluno {
         $stmt->execute();
     }
 
-    public function buscarDados(){
+    public function buscarDados()
+    {
         $conexao = new Conector();
         $conn = $conexao->getConexao();
 
@@ -44,13 +46,14 @@ class Aluno {
         $stmt->execute();
         $result = $stmt->get_result();
 
-        if($result->num_rows > 0){
+        if ($result->num_rows > 0) {
             $row = $result->fetch_assoc();
-            $this->dados = ['nome' => $row['Nome'], 'email' => $row['Email'], 'id'=> $row['UsuarioID']];
+            $this->dados = ['nome' => $row['Nome'], 'email' => $row['Email'], 'id' => $row['UsuarioID']];
         }
     }
 
-    public function addAluno(){
+    public function addAluno()
+    {
         $conexao = new Conector();
         $conn = $conexao->getConexao();
 
@@ -60,7 +63,8 @@ class Aluno {
         $stmt->execute();
     }
 
-    public function idAluno(){
+    public function idAluno()
+    {
         $conexao = new Conector();
         $conn = $conexao->getConexao();
 
@@ -70,14 +74,15 @@ class Aluno {
         $stmt->execute();
         $result = $stmt->get_result();
 
-        if($result->num_rows > 0){
+        if ($result->num_rows > 0) {
             $row = $result->fetch_assoc();
             $alunoID = $row['AlunoID'];
             $this->dados['alunoID'] = $alunoID;
         }
     }
 
-    public function addMatricula(){
+    public function addMatricula()
+    {
         $conexao = new Conector();
         $conn = $conexao->getConexao();
 
@@ -94,3 +99,6 @@ $user->buscarDados();
 $user->addAluno();
 $user->idAluno();
 $user->addMatricula();
+// Redireciona com mensagem de sucesso
+header('Location: ../../View/Admin/AdicionarAluno.php?msg=Aluno registrado com sucesso!');
+exit();
