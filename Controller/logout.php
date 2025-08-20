@@ -20,5 +20,5 @@ setcookie('session_token', '', time() - 3600, "/");
 setcookie('user_email', '', time() - 3600, "/");
 session_destroy();
 
-header("Location: ../../View/Login.php");
+header("Location: ../View/Login.php");
 exit();

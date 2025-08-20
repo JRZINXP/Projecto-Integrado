@@ -1,5 +1,6 @@
 <?php
 include '../../Controller/Admin/Home.php';
+include_once '../../Controller/validaSessao.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">
