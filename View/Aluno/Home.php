@@ -1,6 +1,7 @@
 <?php 
     session_start();
     include '../../Controller/Aluno/Home.php';
+    include_once '../../Controller/validaSessao.php';
 ?>
 
 <!DOCTYPE html>
